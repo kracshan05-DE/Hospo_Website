@@ -1,0 +1,25 @@
+{
+  "name": "hospo-fresh-studio",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "sanity dev",
+    "build": "sanity build ../out/studio --yes",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@sanity/orderable-document-list": "2.0.25",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "sanity": "6.17.0",
+    "styled-components": "6.5.3"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.0",
+    "typescript": "^5.5.0"
+  }
+}

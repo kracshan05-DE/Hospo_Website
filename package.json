@@ -1,0 +1,32 @@
+{
+  "name": "hospo-fresh-website",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "fetch:products": "node scripts/fetch-products.mjs",
+    "dev": "npm run fetch:products && next dev",
+    "build": "npm run fetch:products && next build && npm run build:studio",
+    "build:site": "npm run fetch:products && next build",
+    "build:studio": "npm ci --prefix studio --no-audit --no-fund && npm run build --prefix studio",
+    "studio": "npm run dev --prefix studio",
+    "start": "npx serve out",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "next": "14.2.35",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "14.2.35",
+    "typescript": "^5.5.0"
+  }
+}
