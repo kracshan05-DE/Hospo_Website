@@ -1,0 +1,58 @@
+# Netlify build and hosting configuration.
+#
+# One build produces two things in `out/`:
+#   - the public website (Next.js static export, see next.config.js)
+#   - the Sanity Studio product editor at /studio (see studio/)
+# Netlify serves both as static files from its CDN. No functions run.
+
+[build]
+  command = "npm run build"
+  publish = "out"
+
+[build.environment]
+  # Sanity Studio 6 requires Node 22.12 or newer.
+  NODE_VERSION = "22"
+  NEXT_TELEMETRY_DISABLED = "1"
+
+# Security headers for every response. The public pages' Content-Security-
+# Policy is set per page via <meta> (see lib/csp.ts).
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Strict-Transport-Security = "max-age=63072000; includeSubDomains"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+# The Studio is not for search engines.
+[[headers]]
+  for = "/studio/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+# The Studio is a single-page app: any /studio/... address loads its
+# index.html, and the Studio shows the right screen. Existing files (its JS
+# and CSS) are served first, because this rule is not forced.
+[[redirects]]
+  from = "/studio/*"
+  to = "/studio/index.html"
+  status = 200
+
+# The Studio's page links its favicons at /static/...; serve them from the
+# Studio's folder. (The website itself never uses /static.)
+[[redirects]]
+  from = "/static/*"
+  to = "/studio/static/:splat"
+  status = 200
+
+# Friendly and old admin addresses lead to the Studio.
+[[redirects]]
+  from = "/admin"
+  to = "/studio/"
+  status = 301
+
+[[redirects]]
+  from = "/admin/*"
+  to = "/studio/"
+  status = 301
